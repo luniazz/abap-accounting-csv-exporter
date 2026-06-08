@@ -1,0 +1,3 @@
+Empresa;Ano;NrDocumento;DataLançamento;Moeda;Nr.Item;ContaContábil;Chave Lançamento;Débito/Crédito;Valor
+1000;2024;0100000031;20240321;BRL;001;400000;40;D;4000.00
+1000;2024;0100000032;20240321;BRL;001;500000;50;C;4000.00
