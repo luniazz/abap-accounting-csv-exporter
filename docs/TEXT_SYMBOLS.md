@@ -1,8 +1,9 @@
 # Text Symbols
 
-O programa utiliza `text-xxx` para mensagens. Abaixo estão sugestões de textos para cadastrar nos símbolos de texto do report.
+The program uses `text-xxx` for user-facing messages.  
+The messages below were maintained in Portuguese in the SAP report.
 
-| Símbolo | Texto sugerido |
+| Symbol | Portuguese Text |
 |---|---|
 | `E01` | Nenhum documento encontrado para os filtros informados. |
 | `E02` | Erro ao converter dados para o formato CSV. |
