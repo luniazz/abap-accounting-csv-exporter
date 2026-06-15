@@ -1,68 +1,68 @@
 # Accounting Documents CSV Exporter
 
-Projeto ABAP para exportação de documentos contábeis do SAP para arquivo CSV, com foco em integração com sistemas legados.
+ABAP project for exporting SAP accounting documents to a CSV file, designed for integration with legacy systems.
 
-## Objetivo
+## Objective
 
-Selecionar documentos contábeis nas tabelas standard `BKPF` e `BSEG`, preparar os dados em um layout funcional e gerar um arquivo `.csv` separado por ponto e vírgula.
+Select accounting documents from the standard SAP tables `BKPF` and `BSEG`, transform the data into a functional layout, and generate a semicolon-separated `.csv` file.
 
-O programa permite filtrar os documentos por:
+The program allows users to filter accounting documents by:
 
-- Empresa (`BKPF-BUKRS`)
-- Ano fiscal (`BKPF-GJAHR`)
-- Número do documento (`BKPF-BELNR`)
+* Company Code (`BKPF-BUKRS`)
+* Fiscal Year (`BKPF-GJAHR`)
+* Document Number (`BKPF-BELNR`)
 
-A seleção considera apenas documentos contábeis do tipo `SA`, utilizando o campo `BKPF-BLART`.
+The selection is restricted to accounting documents of type `SA`, using the field `BKPF-BLART`.
 
-## Objetos ABAP
+## ABAP Objects
 
-| Objeto | Tipo | Descrição |
-|---|---|---|
-| `ZFII001_15E` | Report executável | Programa principal |
-| `ZFII001_15E_TOP` | Include | Declarações globais, tipos, constantes e tabelas internas |
-| `ZFII001_15E_SEL` | Include | Tela de seleção |
-| `ZFII001_15E_F01` | Include | Rotinas de busca, tratamento, conversão e download |
-| `ZFITI001_15E` | Transação | Transação para execução do report |
+| Object            | Type              | Description                                                  |
+| ----------------- | ----------------- | ------------------------------------------------------------ |
+| `ZFII001_15E`     | Executable Report | Main program                                                 |
+| `ZFII001_15E_TOP` | Include           | Global declarations, types, constants and internal tables    |
+| `ZFII001_15E_SEL` | Include           | Selection screen                                             |
+| `ZFII001_15E_F01` | Include           | Data selection, processing, conversion and download routines |
+| `ZFITI001_15E`    | Transaction       | Transaction used to execute the report                       |
 
-## Layout do arquivo CSV
+## CSV File Layout
 
 ```text
 Empresa;Ano;NrDocumento;DataLançamento;Moeda;Nr.Item;ContaContábil;Chave Lançamento;Débito/Crédito;Valor
 ```
 
-Campos SAP utilizados:
+SAP fields used in the output:
 
-| Campo CSV | Origem SAP |
-|---|---|
-| Empresa | `BKPF-BUKRS` |
-| Ano | `BKPF-GJAHR` |
-| NrDocumento | `BKPF-BELNR` |
-| DataLançamento | `BKPF-BUDAT` |
-| Moeda | `BKPF-WAERS` |
-| Nr.Item | `BSEG-BUZEI` |
-| ContaContábil | `BSEG-HKONT` |
-| Chave Lançamento | `BSEG-BSCHL` |
-| Débito/Crédito | Conversão de `BSEG-SHKZG`: `S -> D`, `H -> C` |
-| Valor | `BSEG-DMBTR` |
+| CSV Field        | SAP Source                                       |
+| ---------------- | ------------------------------------------------ |
+| Empresa          | `BKPF-BUKRS`                                     |
+| Ano              | `BKPF-GJAHR`                                     |
+| NrDocumento      | `BKPF-BELNR`                                     |
+| DataLançamento   | `BKPF-BUDAT`                                     |
+| Moeda            | `BKPF-WAERS`                                     |
+| Nr.Item          | `BSEG-BUZEI`                                     |
+| ContaContábil    | `BSEG-HKONT`                                     |
+| Chave Lançamento | `BSEG-BSCHL`                                     |
+| Débito/Crédito   | Conversion from `BSEG-SHKZG`: `S -> D`, `H -> C` |
+| Valor            | `BSEG-DMBTR`                                     |
 
-## Fluxo de processamento
+## Processing Flow
 
-1. O usuário informa os filtros na tela de seleção.
-2. O programa seleciona documentos nas tabelas `BKPF` e `BSEG`.
-3. O indicador de débito/crédito é convertido para o layout esperado.
-4. Os dados são preparados no layout final.
-5. A tabela interna é convertida para CSV usando `SAP_CONVERT_TO_CSV_FORMAT`.
-6. O usuário escolhe o caminho de download usando `CL_GUI_FRONTEND_SERVICES=>FILE_SAVE_DIALOG`.
-7. O arquivo é salvo localmente usando `CL_GUI_FRONTEND_SERVICES=>GUI_DOWNLOAD`.
+1. The user enters the filters on the selection screen.
+2. The program selects accounting documents from `BKPF` and `BSEG`.
+3. The debit/credit indicator is converted to the expected output format.
+4. The selected data is transformed into the final CSV layout.
+5. The internal table is converted to CSV format using `SAP_CONVERT_TO_CSV_FORMAT`.
+6. The user selects the download path using `CL_GUI_FRONTEND_SERVICES=>FILE_SAVE_DIALOG`.
+7. The file is saved locally using `CL_GUI_FRONTEND_SERVICES=>GUI_DOWNLOAD`.
 
-## Observações técnicas
+## Technical Notes
 
-- O programa foi desenvolvido para execução online, pois utiliza serviços de frontend para seleção de caminho e download do arquivo.
-- A geração do arquivo depende do SAP GUI ou de ambiente compatível com `CL_GUI_FRONTEND_SERVICES`.
-- O separador utilizado no CSV é ponto e vírgula (`;`).
-- O filtro por tipo de documento está fixo para `SA` através da constante `c_blart_sa`.
+* The program is designed for online execution, as it uses frontend services for file path selection and download.
+* File generation depends on SAP GUI or an environment compatible with `CL_GUI_FRONTEND_SERVICES`.
+* The CSV separator used is a semicolon (`;`).
+* The accounting document type filter is fixed to `SA` through the constant `c_blart_sa`.
 
-## Estrutura do repositório
+## Repository Structure
 
 ```text
 .
